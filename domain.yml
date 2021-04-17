@@ -1,0 +1,54 @@
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
+intents:
+- default_welcome_intent
+- ask_guide
+- ask_travel
+- ask_facts
+- ask_safe
+- inform
+- affirm
+- deny
+- stop
+
+entities:
+- loc
+- activity
+- outdoor_seating
+
+slots:
+  location:
+    type: unfeaturized
+    auto_fill: false
+  source:
+    type: unfeaturized
+    auto_fill: false
+  destination:
+    type: unfeaturized
+    auto_fill: false
+  activity:
+    type: unfeaturized
+    auto_fill: false
+  outdoor_seating:
+    type: unfeaturized
+    auto_fill: false
+
+responses:
+
+  utter_
+  utter_ask_rephrase:
+  - text: "Sorry, I'm not sure I understand. Could you rephrase it?"
+  - text: "Could you please rephrase your message? I didn't quite get that."
+
+actions:
+- action_greet
+- action_guide
+- action_travel
+- action_facts
+- action_safe
+- action_stop
+- action_default_fallback
+
+forms:
+- some_form

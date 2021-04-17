@@ -1,0 +1,9 @@
+__pycache__/
+.vscode/
+datasets/
+models/
+ngrok.exe
+*.log
+*_cache
+*.db*
+*.dot
