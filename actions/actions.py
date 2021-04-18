@@ -15,7 +15,7 @@ from datetime import datetime
 import sqlite3
 import tweepy
 
-from .utils import query_yelp_db,analyze_tweets
+from .utils import query_yelp_db,analyze_tweets,query_yelp_db_2
 
 conn = sqlite3.connect('datasets/Yelp.db')
 
@@ -71,13 +71,18 @@ class ActionGuide(Action):
         if isinstance(activity,str):
             activity = [activity]
         
-        rows = query_yelp_db(conn,location,activity=activity,cuisine=cuisine,
+        rows = query_yelp_db_2(conn,location,activity=activity,cuisine=cuisine,
         ambience=ambience,outdoor_seating=outdoor_seating,age_allowed=age_allowed,noise_level=noise_level,
         accept_credit_card=accept_credit_card,price_range=price_range,wifi=wifi)
 
         if isinstance(rows,list):
-            new_rows = (analyze_tweets([row[2] for row in rows],10,twitter_api))
-            dispatcher.utter_message('\n'.join(new_rows))
+            new_rows = []
+            for i,rowj in enumerate((analyze_tweets([row[2] for row in rows],10,twitter_api))):
+                for row in rows:
+                    if rowj in row:
+                        new_rows.append(str(i+1) + ": " + rowj + '<br>Tip: ' + row[-1])
+
+            dispatcher.utter_message('<br><br>'.join(new_rows))
         else:
             dispatcher.utter_message(rows)
         for row in rows:

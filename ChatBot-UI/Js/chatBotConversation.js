@@ -6,7 +6,7 @@ var chatBotSendButton           = document.querySelector( ".chatBot .chatForm #s
 var chatBotTextArea             = document.querySelector( ".chatBot .chatForm #chatTextBox" )
 
 // Default values for replies
-var chatBotInitiateMessage      = "Hello! I am Columbus."
+var chatBotInitiateMessage      = "Welcome Fellow Voyager!"
 var chatBotBlankMessageReply    = "Type something!"
 var chatBotReply                = "{{ reply }}"
 var response                    = ""
