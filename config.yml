@@ -2,14 +2,17 @@ language: en-in
 pipeline:
 - name: WhitespaceTokenizer
 - name: RegexFeaturizer
+- name: components.RegexEntityExtractor.RegexEntityExtractor
 - name: LexicalSyntacticFeaturizer
 - name: CountVectorsFeaturizer
 - name: CountVectorsFeaturizer
   analyzer: char_wb
   min_ngram: 1
-  max_ngram: 5
+  max_ngram: 4
+- name: "CRFEntityExtractor"
 - name: DIETClassifier
-  epochs: 200
+  entity_recognition: False
+  epochs: 250
   tensorboard_log_directory: tensorboard_logs
   tensorboard_log_level: epoch
   random_seed: 42
@@ -21,7 +24,6 @@ policies:
   epochs: 30
   hidden_layer_sizes:
     dialogue:
-    - 256
     - 128
     labels:
     - 128

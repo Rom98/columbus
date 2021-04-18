@@ -1,6 +1,7 @@
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
+  
 intents:
 - default_welcome_intent
 - ask_guide
@@ -10,12 +11,19 @@ intents:
 - inform
 - affirm
 - deny
-- stop
+- restart
 
 entities:
 - loc
 - activity
+- cuisine
 - outdoor_seating
+- age_allowed
+- ambience
+- noise_level
+- accept_credit_card
+- price_range
+- wifi
 
 slots:
   location:
@@ -36,7 +44,8 @@ slots:
 
 responses:
 
-  utter_
+  utter_ok:
+  - text: "Okay"
   utter_ask_rephrase:
   - text: "Sorry, I'm not sure I understand. Could you rephrase it?"
   - text: "Could you please rephrase your message? I didn't quite get that."

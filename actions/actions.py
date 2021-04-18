@@ -12,9 +12,11 @@ from rasa_sdk.executor import CollectingDispatcher
 
 import re
 from datetime import datetime
+import sqlite3
 
-from .utils import dummy
+from .utils import query_yelp_db
 
+conn = sqlite3.connect('datasets/Yelp.db')
 form_intents_actions = {'dth_Recharge':'dth_form',}
 
 class ActionGreet(Action):
@@ -43,7 +45,24 @@ class ActionGuide(Action):
         currLoc = None #Replace with func to get current location
         location = next(tracker.get_latest_entity_values('loc'),currLoc)
         activity = next(tracker.get_latest_entity_values('activity'),None)
+        cuisine =  next(tracker.get_latest_entity_values('cuisine'),None)
+        ambience =  next(tracker.get_latest_entity_values('ambience'),None)
         outdoor_seating = next(tracker.get_latest_entity_values('outdoor_seating'),None)
+        age_allowed = next(tracker.get_latest_entity_values('age_allowed'),None)
+        noise_level = next(tracker.get_latest_entity_values('noise_level'),None)
+        accept_credit_card = next(tracker.get_latest_entity_values('accept_credit_card'),None)
+        price_range = next(tracker.get_latest_entity_values('price_range'),None)
+        wifi = next(tracker.get_latest_entity_values('wifi'),None)
+
+        if isinstance(activity,str):
+            activity = [activity]
+        
+        rows = query_yelp_db(conn,location,activity=activity,cuisine=cuisine,
+        ambience=ambience,outdoor_seating=outdoor_seating,age_allowed=age_allowed,noise_level=noise_level,
+        accept_credit_card=accept_credit_card,price_range=price_range,wifi=wifi)
+
+        for row in rows[0:10]:
+            print(row[2])
 
 class ActionTravel(Action):
     def name(self) -> Text:
@@ -101,6 +120,8 @@ class ActionDefaultFallback(Action):
         ) -> List[Dict]:
         dispatcher.utter_message("Sorry I did not understand you, please rephrase the sentence or type restart to restart this session")
 
+"""
+Unrequired
 class ActionStop(Action):
     def name(self) -> Text:
         return "action_stop"
@@ -117,3 +138,4 @@ class ActionStop(Action):
             dispatcher.utter_message(template='utter_ask_continue')
         else:
             dispatcher.utter_message("There is nothing to stop!")
+"""
