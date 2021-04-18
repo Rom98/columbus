@@ -46,9 +46,9 @@
 - I am looking for some [Entertainment](activity) in [New York](loc)
 
 ## intent:ask_travel
-- How to travel to [Irvine](loc) from [Boulder](loc)
-- How to get from [New York](loc) to [Boulder](loc)
-- How far is [Canada](loc) from [US](loc)
+- How to travel to [Irvine]{"entity": "activity", "role": "destination"} from [Boulder]{"entity": "loc", "role": "source"}
+- How to get from [New York]{"entity": "loc", "role": "source"} to [Boulder]{"entity": "loc", "role": "destination"}
+- How far is [Boulder]{"entity": "loc", "role": "destination"} from [Irvine]{"entity": "loc", "role": "source"}
 
 ## intent:ask_safe
 - How safe is [San Jose](loc)

@@ -13,11 +13,25 @@ from rasa_sdk.executor import CollectingDispatcher
 import re
 from datetime import datetime
 import sqlite3
+import tweepy
 
-from .utils import query_yelp_db
+from .utils import query_yelp_db,analyze_tweets
 
 conn = sqlite3.connect('datasets/Yelp.db')
-form_intents_actions = {'dth_Recharge':'dth_form',}
+
+# Authentication
+consumerKey = "nFu2HqrelkEiax0L5Lh4Sw"
+consumerSecret = "6OUaIfj0ECfeJD24CVlDrcc1qqajnHBgsB7b6RPmvA"
+accessToken = "1193875656-G3iatRJ18tCCFTf8x06kV5B6XwdWbja4S4DVXDL"
+accessTokenSecret = "IGOxuEQYeTREpGkL4F5LkdYNxUPLFo0zBjX3Yfdg8g"
+
+try:
+    auth = tweepy.OAuthHandler(consumerKey, consumerSecret)
+    auth.set_access_token(accessToken, accessTokenSecret)
+    twitter_api = tweepy.API(auth)
+    print(twitter_api)
+except:
+    print("Error: Authentication Failed")
 
 class ActionGreet(Action):
     def name(self) -> Text:
@@ -61,8 +75,13 @@ class ActionGuide(Action):
         ambience=ambience,outdoor_seating=outdoor_seating,age_allowed=age_allowed,noise_level=noise_level,
         accept_credit_card=accept_credit_card,price_range=price_range,wifi=wifi)
 
-        for row in rows[0:10]:
-            print(row[2])
+        if isinstance(rows,list):
+            new_rows = (analyze_tweets([row[2] for row in rows],10,twitter_api))
+            dispatcher.utter_message('\n'.join(new_rows))
+        else:
+            dispatcher.utter_message(rows)
+        for row in rows:
+            print(row[2],row[9],row[10])
 
 class ActionTravel(Action):
     def name(self) -> Text:

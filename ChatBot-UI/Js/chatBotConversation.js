@@ -9,25 +9,42 @@ var chatBotTextArea             = document.querySelector( ".chatBot .chatForm #c
 var chatBotInitiateMessage      = "Hello! I am Columbus."
 var chatBotBlankMessageReply    = "Type something!"
 var chatBotReply                = "{{ reply }}"
-
+var response                    = ""
+var url                 = ""
+var options             = ""
 // Collecting user input
 var inputMessage                = ""
 
 // This helps generate text containers in the chat
 var typeOfContainer             = ""
 
+async function getapi(url,options) {
+    
+    // Storing response
+    const response = await fetch(url,options);
+    
+    // Storing data in form of JSON
+    var data = await response.json();
+    console.log(data[0].text);
+    return data[0].text
+}
 // Function to start ChatBot
 chatBotSendButton.addEventListener("click", (event)=> {
     // Since the button is a submit button, the form gets submittd and the complete webpage reloads. This prevents the page from reloading. We would submit the message later manually
     event.preventDefault()
     if( validateMessage() ){
         inputMessage    = chatBotTextArea.value
-        typeOfContainer = "message"
+        var payload = JSON.stringify({"sender":"test_user","message":inputMessage});
+        url = "http://127.0.0.1:5005/webhooks/rest/webhook";
+        options = {method:"post",body:payload,headers:{"contentType":"application/json"}};
+        typeOfContainer = "message";
         createContainer( typeOfContainer )
         setTimeout(function(){
             typeOfContainer = "reply"
             createContainer( typeOfContainer )
         }, 750);
+        //response = UrlFetchApp.fetch(url, options);
+        //  console.log(response)
     }
     else{        
         typeOfContainer = "error";
@@ -37,7 +54,7 @@ chatBotSendButton.addEventListener("click", (event)=> {
     chatBotTextArea.focus()
 })
 
-function createContainer( typeOfContainer ) {
+async function createContainer( typeOfContainer ) {
     var containerID = ""
     var textClass   = ""
     switch( typeOfContainer ) {
@@ -47,6 +64,9 @@ function createContainer( typeOfContainer ) {
             textClass   = "message"
             break;
         case "reply"        :
+            containerID = "replyContainer"
+            textClass   = "reply"
+            break;
         case "initialize"   :
         case "error"        :
             // This would create a reply container for bot's reply
@@ -83,6 +103,7 @@ function createContainer( typeOfContainer ) {
             newReply.setAttribute( "class" , "reply animateChat accentColor" )
             switch( typeOfContainer ){
                 case "reply"        :
+                    chatBotReply = await getapi(url,options)
                     newReply.innerHTML  = chatBotReply
                     break
                 case "initialize"   :
