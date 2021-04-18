@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Columbus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./Css/main.css">
+    <link rel="stylesheet" href="./Css/chatBot.css">
+    <link rel="shortcut icon" href="gfx/logo.png" type="image/x-icon">
+    <style></style>
+</head>
+<body>
+    <div class="content">
+        <h1>Columbus</h1>
+        <p>Columbus helps you plan your outing with ease. Go to Ask Columbus and ask questions you have!</p>
+    </div>
+    <div class="content">
+        <h1>Columbus</h1>
+        <p>Columbus helps you plan your outing with ease. Go to Ask Columbus and ask questions you have!</p>
+    </div>
+    <div class="chatBot" >
+        <div class="chatBotHeading">
+            <label for="chatTextBox" id="chatOpenTrigger" class="">Ask Columbus!</label>
+        </div>
+        <hr class="">
+        <div class="chatBody">
+            <div class="chatSession">
+            </div>
+        </div>
+        <form class="chatForm" autocomplete="off">
+            <div class="typingArea">
+                <textarea name="chatInput" id="chatTextBox" class="textArea" onblur="if(!validateMessage()) this.value = 'Type here...'" onfocus="if(!validateMessage()) this.value = ''"></textarea>
+                <button type="submit" class="sendButton" id="sendButton"><img src="./Gfx/send.svg" alt="Send" srcset=""></button>
+            </div>
+            <button type="button" id="chatCloseTrigger">Close Chat!</button>
+        </form>
+    </div>
+    <!-- JavaScripts from native directory -->
+    <script src="./Js/chatBotConversation.js"></script>
+    <script src="./Js/chatBotValidate.js"></script>
+    <script src="./Js/chatBotAnimate.js"></script>
+
+    <!-- JavaScripts for GitHub buttons -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+</body>
+</html>
